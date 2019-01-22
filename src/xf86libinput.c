@@ -3425,7 +3425,7 @@ xf86libinput_pre_init(InputDriverPtr drv,
 
 	/* Disable acceleration in the server, libinput does it for us */
 	pInfo->options = xf86ReplaceIntOption(pInfo->options, "AccelerationProfile", -1);
-	pInfo->options = xf86ReplaceStrOption(pInfo->options, "AccelerationScheme", "none");
+	pInfo->options = xf86ReplaceStrOption(pInfo->options, "AccelerationScheme", "predictable");
 
 	xf86libinput_parse_options(pInfo, driver_data, device);
 
