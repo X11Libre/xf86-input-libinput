@@ -264,6 +264,9 @@ Indicates which scroll methods are available on this device.
 3 boolean values (8 bit, 0 or 1), in order "two-finger", "edge", "button".
 Indicates which scroll method is currently enabled on this device.
 .TP 7
+.BI "libinput Scroll Distance Scale"
+2 32-bit float values. Scroll distance is multiplied by this before being
+passed to the client. First is vertical scale, second is horizontal scale.
 .BI "libinput Send Events Modes Available"
 2 boolean values (8 bit, 0 or 1), in order "disabled" and
 "disabled-on-external-mouse". Indicates which send-event modes are available

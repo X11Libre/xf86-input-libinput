@@ -109,6 +109,12 @@
    only one is enabled at a time at max, read-only */
 #define LIBINPUT_PROP_SCROLL_METHOD_ENABLED_DEFAULT "libinput Scroll Method Enabled Default"
 
+/* Scroll distance scale: FLOAT, 2 values, 32 bit */
+#define LIBINPUT_PROP_SCROLL_DISTANCE_SCALE "libinput Scroll Distance Scale"
+
+/* Scroll distance scale: FLOAT, 2 values, 32 bit, read only */
+#define LIBINPUT_PROP_SCROLL_DISTANCE_SCALE_DEFAULT "libinput Scroll Distance Scale Default"
+
 /* Scroll button for button scrolling: 32-bit int, 1 value */
 #define LIBINPUT_PROP_SCROLL_BUTTON "libinput Button Scrolling Button"
 
