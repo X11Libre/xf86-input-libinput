@@ -57,6 +57,10 @@ if cc.has_function('libinput_config_accel_create',
 		   dependencies: dep_libinput)
 	config_h.set('HAVE_LIBINPUT_CUSTOM_ACCEL', 1)
 endif
+if cc.has_function('libinput_device_config_tap_get_maps',
+		   dependencies: dep_libinput)
+	config_h.set('HAVE_LIBINPUT_CUSTOM_TAP_BUTTON_MAP', 1)
+endif
 
 dir_headers = get_option('sdkdir')
 if dir_headers == ''
