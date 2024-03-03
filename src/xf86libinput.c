@@ -681,6 +681,9 @@ LibinputApplyConfigTap(DeviceIntPtr dev,
 		switch(driver_data->options.tap_button_map) {
 		case LIBINPUT_CONFIG_TAP_MAP_LRM: map = "lrm"; break;
 		case LIBINPUT_CONFIG_TAP_MAP_LMR: map = "lmr"; break;
+#if HAVE_LIBINPUT_CUSTOM_TAP_BUTTON_MAP
+		case LIBINPUT_CONFIG_TAP_MAP_LRN: map = "lrn"; break;
+#endif
 		default: map = "unknown"; break;
 		}
 		xf86IDrvMsg(pInfo, X_ERROR,
@@ -2873,6 +2876,10 @@ xf86libinput_parse_tap_buttonmap_option(InputInfoPtr pInfo,
 			map = LIBINPUT_CONFIG_TAP_MAP_LMR;
 		else if (streq(str, "lrm"))
 			map = LIBINPUT_CONFIG_TAP_MAP_LRM;
+#if HAVE_LIBINPUT_CUSTOM_TAP_BUTTON_MAP
+		else if (streq(str, "lrn"))
+			map = LIBINPUT_CONFIG_TAP_MAP_LRN;
+#endif
 		else
 			xf86IDrvMsg(pInfo, X_ERROR,
 				    "Invalid TapButtonMap: %s\n",
@@ -4335,30 +4342,45 @@ LibinputSetPropertyTapButtonmap(DeviceIntPtr dev,
 	InputInfoPtr pInfo = dev->public.devicePrivate;
 	struct xf86libinput *driver_data = pInfo->private;
 	BOOL* data;
+	uint32_t maps = 0;
 	enum libinput_config_tap_button_map map;
 
-	if (val->format != 8 || val->size != 2 || val->type != XA_INTEGER)
+	if (val->format != 8 || val->size < 2 || val->size > 3 || val->type != XA_INTEGER)
 		return BadMatch;
 
 	data = (BOOL*)val->data;
 
+	if (data[0]) {
+		map = LIBINPUT_CONFIG_TAP_MAP_LRM;
+		maps |= (1 << map);
+	}
+	if (data[1]) {
+		map = LIBINPUT_CONFIG_TAP_MAP_LMR;
+		maps |= (1 << map);
+	}
+#if HAVE_LIBINPUT_CUSTOM_TAP_BUTTON_MAP
+	if (val->size > 2 && data[2]) {
+		map = LIBINPUT_CONFIG_TAP_MAP_LRN;
+		maps |= (1 << map);
+	}
+#endif
+
 	if (checkonly) {
-	    if ((data[0] && data[1]) || (!data[0] && !data[1]))
-		return BadValue;
+	    if (__builtin_popcount(maps) > 1)
+		    return BadValue;
 
 	    if (!xf86libinput_check_device(dev, atom))
-		return BadMatch;
-	}
+		    return BadMatch;
 
-	if (data[0])
-		map = LIBINPUT_CONFIG_TAP_MAP_LRM;
-	else if (data[1])
-		map = LIBINPUT_CONFIG_TAP_MAP_LMR;
-	else
-		return BadValue;
-
-	if (!checkonly)
+#if HAVE_LIBINPUT_CUSTOM_TAP_BUTTON_MAP
+	    uint32_t supported;
+	    supported = libinput_device_config_tap_get_maps(device);
+	    if (maps && (maps & supported) == 0)
+		    return BadValue;
+#endif
+	} else {
 		driver_data->options.tap_button_map = map;
+	}
 
 	return Success;
 }
@@ -5415,7 +5437,7 @@ LibinputInitTapButtonmapProperty(DeviceIntPtr dev,
 				 struct libinput_device *device)
 {
 	enum libinput_config_tap_button_map map;
-	BOOL data[2] = {0};
+	BOOL data[3] = {0};
 
 	if (!subdevice_has_capabilities(dev, CAP_POINTER))
 		return;
@@ -5432,6 +5454,11 @@ LibinputInitTapButtonmapProperty(DeviceIntPtr dev,
 	case LIBINPUT_CONFIG_TAP_MAP_LMR:
 		data[1] = 1;
 		break;
+#if HAVE_LIBINPUT_CUSTOM_TAP_BUTTON_MAP
+	case LIBINPUT_CONFIG_TAP_MAP_LRN:
+		data[2] = 1;
+		break;
+#endif
 	default:
 		break;
 	}
@@ -5439,7 +5466,7 @@ LibinputInitTapButtonmapProperty(DeviceIntPtr dev,
 	prop_tap_buttonmap = LibinputMakeProperty(dev,
 						  LIBINPUT_PROP_TAP_BUTTONMAP,
 						  XA_INTEGER, 8,
-						  2, data);
+						  3, data);
 	if (!prop_tap_buttonmap)
 		return;
 
@@ -5453,6 +5480,11 @@ LibinputInitTapButtonmapProperty(DeviceIntPtr dev,
 	case LIBINPUT_CONFIG_TAP_MAP_LMR:
 		data[1] = 1;
 		break;
+#if HAVE_LIBINPUT_CUSTOM_TAP_BUTTON_MAP
+	case LIBINPUT_CONFIG_TAP_MAP_LRN:
+		data[2] = 1;
+		break;
+#endif
 	default:
 		break;
 	}
@@ -5460,7 +5492,7 @@ LibinputInitTapButtonmapProperty(DeviceIntPtr dev,
 	prop_tap_buttonmap_default = LibinputMakeProperty(dev,
 							  LIBINPUT_PROP_TAP_BUTTONMAP_DEFAULT,
 							  XA_INTEGER, 8,
-							  2, data);
+							  3, data);
 }
 
 static void

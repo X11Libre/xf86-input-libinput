@@ -89,6 +89,17 @@ AC_LINK_IFELSE(
                [AC_MSG_RESULT([no])
                 [libinput_have_custom_accel=no]])
 
+AC_MSG_CHECKING([if libinput_device_config_tap_get_maps is available])
+AC_LINK_IFELSE(
+               [AC_LANG_PROGRAM([[#include <libinput.h>]],
+                                [[libinput_device_config_tap_get_maps()]])],
+               [AC_MSG_RESULT([yes])
+                AC_DEFINE(HAVE_LIBINPUT_CUSTOM_TAP_BUTTON_MAP, [1],
+                          [libinput_device_config_tap_get_maps() is available])
+                [libinput_have_custom_tap_button_map=yes]],
+               [AC_MSG_RESULT([no])
+                [libinput_have_custom_tap_button_map=no]])
+
 LIBS=$OLD_LIBS
 CFLAGS=$OLD_CFLAGS
 
