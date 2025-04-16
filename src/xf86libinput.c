@@ -2734,6 +2734,20 @@ xf86libinput_handle_event(struct libinput_event *event)
 			break;
 		case LIBINPUT_EVENT_SWITCH_TOGGLE:
 			break;
+
+		/* new libinput events we don't handle yet */
+#ifdef LIBINPUT_EVENT_GESTURE_HOLD_BEGIN
+		case LIBINPUT_EVENT_GESTURE_HOLD_BEGIN:
+			break;
+#endif
+#ifdef LIBINPUT_EVENT_GESTURE_HOLD_END
+		case LIBINPUT_EVENT_GESTURE_HOLD_END:
+			break;
+#endif
+#ifdef LIBINPUT_EVENT_TABLET_PAD_KEY
+		case LIBINPUT_EVENT_TABLET_PAD_KEY:
+			break;
+#endif
 	}
 
 out:
