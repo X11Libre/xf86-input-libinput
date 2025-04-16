@@ -85,12 +85,6 @@ safe_atoi_base(const char *str, int *val, int base)
 }
 
 static inline bool
-safe_atoi(const char *str, int *val)
-{
-	return safe_atoi_base(str, val, 10);
-}
-
-static inline bool
 safe_atou_base(const char *str, unsigned int *val, int base)
 {
 	char *endptr;
