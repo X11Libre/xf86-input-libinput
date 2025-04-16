@@ -60,36 +60,6 @@ next_word(const char **state, size_t *len, const char *separators)
 }
 
 /**
- * Return a null-terminated string array with the contents of argv
- * duplicated.
- *
- * Use strv_free() to free the array.
- *
- * @return A null-terminated string array or NULL on errors
- */
-char**
-strv_from_argv(int argc, char **argv)
-{
-	char **strv = NULL;
-
-	assert(argc >= 0);
-
-	if (argc == 0)
-		return NULL;
-
-	strv = zalloc((argc + 1) * sizeof *strv);
-	for (int i = 0; i < argc; i++) {
-		char *copy = safe_strdup(argv[i]);
-		if (!copy) {
-			strv_free(strv);
-			return NULL;
-		}
-		strv[i] = copy;
-	}
-	return strv;
-}
-
-/**
  * Return a null-terminated string array with the tokens in the input
  * string, e.g. "one two\tthree" with a separator list of " \t" will return
  * an array [ "one", "two", "three", NULL ] and num elements 3.
