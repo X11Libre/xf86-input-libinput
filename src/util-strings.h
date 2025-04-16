@@ -387,6 +387,3 @@ strstartswith(const char *str, const char *prefix)
 
 const char *
 safe_basename(const char *filename);
-
-char *
-trunkname(const char *filename);
