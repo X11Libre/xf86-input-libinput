@@ -376,11 +376,3 @@ strendswith(const char *str, const char *suffix)
 	offset = slen - suffixlen;
 	return strneq(&str[offset], suffix, suffixlen);
 }
-
-static inline bool
-strstartswith(const char *str, const char *prefix)
-{
-	size_t prefixlen = strlen(prefix);
-
-	return prefixlen > 0 ? strneq(str, prefix, strlen(prefix)) : false;
-}
