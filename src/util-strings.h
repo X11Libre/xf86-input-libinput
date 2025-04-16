@@ -43,23 +43,6 @@
 
 #include "util-macros.h"
 
-static inline void *
-zalloc(size_t size)
-{
-	void *p;
-
-	/* We never need to alloc anything more than 1,5 MB so we can assume
-	 * if we ever get above that something's going wrong */
-	if (size > 1536 * 1024)
-		assert(!"bug: internal malloc size limit exceeded");
-
-	p = calloc(1, size);
-	if (!p)
-		abort();
-
-	return p;
-}
-
 static inline bool
 safe_atou_base(const char *str, unsigned int *val, int base)
 {
