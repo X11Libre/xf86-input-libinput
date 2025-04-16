@@ -43,24 +43,6 @@
 
 #include "util-macros.h"
 
-static inline bool
-streq(const char *str1, const char *str2)
-{
-	/* one NULL, one not NULL is always false */
-	if (str1 && str2)
-		return strcmp(str1, str2) == 0;
-	return str1 == str2;
-}
-
-static inline bool
-strneq(const char *str1, const char *str2, int n)
-{
-	/* one NULL, one not NULL is always false */
-	if (str1 && str2)
-		return strncmp(str1, str2, n) == 0;
-	return str1 == str2;
-}
-
 static inline void *
 zalloc(size_t size)
 {
