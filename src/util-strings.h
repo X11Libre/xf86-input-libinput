@@ -61,30 +61,6 @@ zalloc(size_t size)
 }
 
 static inline bool
-safe_atoi_base(const char *str, int *val, int base)
-{
-	char *endptr;
-	long v;
-
-	assert(base == 10 || base == 16 || base == 8);
-
-	errno = 0;
-	v = strtol(str, &endptr, base);
-	if (errno > 0)
-		return false;
-	if (str == endptr)
-		return false;
-	if (*str != '\0' && *endptr != '\0')
-		return false;
-
-	if (v > INT_MAX || v < INT_MIN)
-		return false;
-
-	*val = v;
-	return true;
-}
-
-static inline bool
 safe_atou_base(const char *str, unsigned int *val, int base)
 {
 	char *endptr;
