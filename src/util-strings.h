@@ -361,21 +361,3 @@ strstrip(const char *input, const char *what)
 
 	return str;
 }
-
-/**
- * Return true if str ends in suffix, false otherwise. If the suffix is the
- * empty string, strendswith() always returns false.
- */
-static inline bool
-strendswith(const char *str, const char *suffix)
-{
-	size_t slen = strlen(str);
-	size_t suffixlen = strlen(suffix);
-	size_t offset;
-
-	if (slen == 0 || suffixlen == 0 || suffixlen > slen)
-		return false;
-
-	offset = slen - suffixlen;
-	return strneq(&str[offset], suffix, suffixlen);
-}
