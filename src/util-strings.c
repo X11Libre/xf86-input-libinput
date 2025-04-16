@@ -217,30 +217,3 @@ safe_basename(const char *filename)
 
 	return basename + 1;
 }
-
-/**
- * Similar to basename() but returns the trunk only without the (last)
- * trailing suffix, so that:
- *
- * - foo.c returns foo
- * - foo.a.b returns foo.a
- * - foo returns foo
- * - foo/ returns ""
- *
- * @return an allocated string representing the trunk name of the file
- */
-char *
-trunkname(const char *filename)
-{
-	const char *base = safe_basename(filename);
-	char *suffix;
-
-	if (base == NULL)
-		return safe_strdup("");
-
-	suffix = rindex(base, '.');
-	if (suffix == NULL)
-		return safe_strdup(base);
-	else
-		return strndup(base, suffix-base);
-}
