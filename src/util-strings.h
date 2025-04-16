@@ -332,29 +332,3 @@ error:
 	free(result);
 	return -1;
 }
-
-/**
- * Strip any of the characters in what from the beginning and end of the
- * input string.
- *
- * @return a newly allocated string with none of "what" at the beginning or
- * end of string
- */
-static inline char *
-strstrip(const char *input, const char *what)
-{
-	char *str, *last;
-
-	str = safe_strdup(&input[strspn(input, what)]);
-
-	last = str;
-
-	for (char *c = str; *c != '\0'; c++) {
-		if (!strchr(what, *c))
-			last = c + 1;
-	}
-
-	*last = '\0';
-
-	return str;
-}
