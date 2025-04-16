@@ -60,25 +60,6 @@ zalloc(size_t size)
 	return p;
 }
 
-/**
- * strdup guaranteed to succeed. If the input string is NULL, the output
- * string is NULL. If the input string is a string pointer, we strdup or
- * abort on failure.
- */
-static inline char*
-safe_strdup(const char *str)
-{
-	char *s;
-
-	if (!str)
-		return NULL;
-
-	s = strdup(str);
-	if (!s)
-		abort();
-	return s;
-}
-
 static inline bool
 safe_atoi_base(const char *str, int *val, int base)
 {
