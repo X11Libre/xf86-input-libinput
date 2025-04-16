@@ -194,7 +194,6 @@ safe_atod(const char *str, double *val)
 }
 
 char **strv_from_string(const char *in, const char *separator, size_t *num_elements);
-char *strv_join(char **strv, const char *joiner);
 
 static inline void
 strv_free(char **strv) {
