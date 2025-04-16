@@ -192,26 +192,3 @@ strv_join(char **strv, const char *joiner)
 
 	return str;
 }
-
-/**
- * Return a pointer to the basename within filename.
- * If the filename the empty string or a directory (i.e. the last char of
- * filename is '/') NULL is returned.
- */
-const char *
-safe_basename(const char *filename)
-{
-	const char *basename;
-
-	if (*filename == '\0')
-		return NULL;
-
-	basename = strrchr(filename, '/');
-	if (basename == NULL)
-		return filename;
-
-	if (*(basename + 1) == '\0')
-		return NULL;
-
-	return basename + 1;
-}
