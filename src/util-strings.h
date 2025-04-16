@@ -253,7 +253,10 @@ double_array_from_string(const char *in,
 	if(!strv)
 		return result;
 
-	double *numv = zalloc(sizeof(double) * nelem);
+	double *numv = calloc(nelem, sizeof(double));
+	if (!numv)
+		goto out;
+
 	for (size_t idx = 0; idx < nelem; idx++) {
 		double val;
 		if (!safe_atod(strv[idx], &val))

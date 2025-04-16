@@ -122,7 +122,9 @@ strv_from_string(const char *in, const char *separators, size_t *num_elements)
 	}
 
 	size_t strv_len = nelems + 1; /* NULL-terminated */
-	char **strv = zalloc(strv_len * sizeof *strv);
+	char **strv = calloc(strv_len, sizeof(*strv));
+	if (!strv)
+		return NULL;
 
 	size_t idx = 0;
 	const char *word;
