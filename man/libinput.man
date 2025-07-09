@@ -206,6 +206,11 @@ If disabled (the default), the
 button is considered logically down while held down and up once physically
 released.
 .TP 7
+.BI "Option \*qScrollFactor\*q \*q" float \*q
+Sets the scroll factor for scroll events. A higher value means faster scrolling.
+Applications that don't support xi2 input will instead receive scroll button events
+less or more frequently depending on the scroll factor value, instead of scrolling "smoother".
+.TP 7
 .BI "Option \*qScrollMethod\*q \*q" string \*q
 Enables a scroll method. Permitted values are
 .BR none ,

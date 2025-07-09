@@ -154,6 +154,12 @@
 /* Scroll pixel distance: CARD32, 1 value, read-only */
 #define LIBINPUT_PROP_SCROLL_PIXEL_DISTANCE_DEFAULT "libinput Scrolling Pixel Distance Default"
 
+/* Scroll factor: FLOAT, 1 value, 32 bit */
+#define LIBINPUT_PROP_SCROLL_FACTOR "libinput Scrolling Factor"
+
+/* Scroll factor: FLOAT, 1 value, 32 bit, read-only */
+#define LIBINPUT_PROP_SCROLL_FACTOR_DEFAULT "libinput Scrolling Factor Default"
+
 /* Click method: BOOL read-only, 2 values in order buttonareas, clickfinger
    shows available click methods */
 #define LIBINPUT_PROP_CLICK_METHODS_AVAILABLE "libinput Click Methods Available"
