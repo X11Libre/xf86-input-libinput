@@ -207,7 +207,7 @@ button is considered logically down while held down and up once physically
 released.
 .TP 7
 .BI "Option \*qScrollFactor\*q \*q" float \*q
-Sets the scroll factor for scroll events. A higher value means faster scrolling.
+Sets the scroll factor for scroll events. A value higher than 1.0 means faster scrolling.
 Applications that don't support xi2 input will instead receive scroll button events
 less or more frequently depending on the scroll factor value, instead of scrolling "smoother".
 .TP 7
@@ -391,6 +391,12 @@ Indicates if middle emulation is enabled or disabled.
 Sets the rotation angle of the device,
 clockwise of its natural neutral position.
 .TP 7
+.B "libinput Scrolling Factor"
+1 32-bit float value.
+Sets the scroll factor for scroll events. A value higher than 1.0 means faster scrolling.
+Applications that don't support xi2 input will instead receive scroll button events
+less or more frequently depending on the scroll factor value, instead of scrolling "smoother".
+.TP 7
 .B "libinput Scroll Methods Available"
 3 boolean values (8 bit, 0 or 1), in order "two-finger", "edge", "button".
 Indicates which scroll methods are available on this device.
@@ -399,7 +405,7 @@ Indicates which scroll methods are available on this device.
 3 boolean values (8 bit, 0 or 1), in order "two-finger", "edge", "button".
 Indicates which scroll method is currently enabled on this device.
 .TP 7
-.B "libinput Scroll Pixel Distance"
+.B "libinput Scrolling Pixel Distance"
 1 32-bit value (nonzero, with additional implementation-defined range checks).
 Changes the movement distance required to trigger one logical wheel click.
 .TP 7
