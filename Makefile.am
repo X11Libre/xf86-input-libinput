@@ -19,7 +19,10 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-DISTCHECK_CONFIGURE_FLAGS = --with-sdkdir='$${includedir}/xorg'
+# During distcheck, system locations (as provided by pkg-config) may
+# not be writable; provide instead relative locations.
+DISTCHECK_CONFIGURE_FLAGS = --with-xorg-module-dir='$${libdir}/xorg/modules' \
+                            --with-sdkdir='$${includedir}/xorg'
 
 SUBDIRS = src include man test
 MAINTAINERCLEANFILES = ChangeLog INSTALL
