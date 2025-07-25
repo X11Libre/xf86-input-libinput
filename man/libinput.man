@@ -178,6 +178,15 @@ Enables left-handed button orientation, i.e. swapping left and right buttons.
 Enables middle button emulation.
 When enabled, pressing the left and right
 buttons simultaneously produces a middle mouse button click.
+A synonym
+.IP
+.BI "Option \*qEmulate3Buttons\*q \*q" bool \*q
+.IP
+is preserved for compatibility with
+.B evdev
+driver, with 
+.BI "\*qMiddleEmulation\*q
+having preference if both are set.
 .TP 7
 .BI "Option \*qNaturalScrolling\*q \*q" bool \*q
 Enables or disables natural scrolling behavior.
