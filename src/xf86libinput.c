@@ -3489,13 +3489,17 @@ static inline BOOL
 xf86libinput_parse_middleemulation_option(InputInfoPtr pInfo,
 					  struct libinput_device *device)
 {
-	BOOL enabled;
+	int enabled;
 
 	if (!libinput_device_config_middle_emulation_is_available(device))
 		return FALSE;
 
 	enabled = xf86SetBoolOption(pInfo->options,
 				    "MiddleEmulation",
+				    -1); /* returns -1 if the option has not been set */
+	if (enabled == -1)
+		enabled = xf86SetBoolOption(pInfo->options,
+				    "Emulate3Buttons",
 				    libinput_device_config_middle_emulation_get_default_enabled(device));
 	if (libinput_device_config_middle_emulation_set_enabled(device, enabled) !=
 	    LIBINPUT_CONFIG_STATUS_SUCCESS) {
