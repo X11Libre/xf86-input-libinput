@@ -5641,7 +5641,8 @@ LibinputInitTapProperty(DeviceIntPtr dev,
 			struct xf86libinput *driver_data,
 			struct libinput_device *device)
 {
-	BOOL tap = driver_data->options.tapping;
+	// By default tapping property config is true
+	BOOL tap = driver_data->options.tapping ? driver_data->options.tapping : TRUE;
 
 	if (!subdevice_has_capabilities(dev, CAP_POINTER))
 		return;
