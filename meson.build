@@ -146,6 +146,8 @@ configure_file(
 	install_dir: dir_man4
 )
 
+install_headers('include/libinput-properties.h', install_dir: dir_headers)
+
 install_data('conf/40-libinput.conf', install_dir: dir_xorg_conf)
 
 # Now generate config.h
