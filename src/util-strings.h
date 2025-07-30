@@ -24,9 +24,6 @@
 
 #pragma once
 
-#include "config.h"
-#define _GNU_SOURCE
-
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
