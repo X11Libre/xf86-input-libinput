@@ -69,6 +69,9 @@ if cc.has_header_symbol('libinput.h', 'LIBINPUT_LED_COMPOSE',
 			dependencies: dep_libinput)
 	config_h.set('HAVE_LIBINPUT_COMPOSE_AND_KANA', 1)
 endif
+if cc.has_function('libinput_plugin_system_load_plugins', dependencies: dep_libinput)
+	config_h.set('HAVE_LIBINPUT_PLUGINS', 1)
+endif
 
 dir_headers = get_option('sdkdir')
 if dir_headers == ''
