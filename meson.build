@@ -65,7 +65,8 @@ if cc.has_function('libinput_device_config_click_set_clickfinger_button_map',
 		   dependencies: dep_libinput)
 	config_h.set('HAVE_LIBINPUT_CLICKFINGER_BUTTON_MAP', 1)
 endif
-if cc.has_header_symbol('libinput.h', 'LIBINPUT_LED_COMPOSE')
+if cc.has_header_symbol('libinput.h', 'LIBINPUT_LED_COMPOSE',
+			dependencies: dep_libinput)
 	config_h.set('HAVE_LIBINPUT_COMPOSE_AND_KANA', 1)
 endif
 
