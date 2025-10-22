@@ -3854,6 +3854,10 @@ xf86libinput_init_driver_context(void)
 		/* we want all msgs, let the server filter */
 		libinput_log_set_priority(driver_context.libinput,
 					  LIBINPUT_LOG_PRIORITY_DEBUG);
+#if HAVE_LIBINPUT_PLUGINS
+		libinput_plugin_system_append_default_paths(driver_context.libinput);
+		libinput_plugin_system_load_plugins(driver_context.libinput, LIBINPUT_PLUGIN_SYSTEM_FLAG_NONE);
+#endif
 	} else {
 		libinput_ref(driver_context.libinput);
 	}

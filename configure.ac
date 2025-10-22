@@ -111,6 +111,17 @@ AC_LINK_IFELSE(
                [AC_MSG_RESULT([no])
                 [libinput_have_clickfinger_button_map=no]])
 
+AC_MSG_CHECKING([if libinput_plugin_system_load is available])
+AC_LINK_IFELSE(
+               [AC_LANG_PROGRAM([[#include <libinput.h>]],
+                                [[libinput_plugin_system_load_plugins(NULL, 0)]])],
+               [AC_MSG_RESULT([yes])
+                AC_DEFINE(HAVE_LIBINPUT_PLUGINS, [1],
+                          [libinput_plugin_system_load_plugins() is available])
+                [libinput_have_plugin_system=yes]],
+               [AC_MSG_RESULT([no])
+                [libinput_have_plugin_system=no]])
+
 LIBS=$OLD_LIBS
 CFLAGS=$OLD_CFLAGS
 
