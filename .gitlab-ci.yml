@@ -4,7 +4,7 @@
 # Please see the ci-templates documentation for details:
 # https://freedesktop.pages.freedesktop.org/ci-templates/
 
-.templates_sha: &template_sha 84052757dacc5fd65f5ace92b7fe63c60f6c8558 # see https://docs.gitlab.com/ee/ci/yaml/#includefile
+.templates_sha: &template_sha fb9d50ccb3cbbb4c6dc5f9ef53a0ad3cb0d8a177
 
 include:
   - project: 'freedesktop/ci-templates'
@@ -26,10 +26,10 @@ stages:
 
 .fedora:
   variables:
-    FDO_DISTRIBUTION_VERSION: 39
+    FDO_DISTRIBUTION_VERSION: 43
     FDO_DISTRIBUTION_PACKAGES: 'git autoconf automake libtool make xorg-x11-server-devel libudev-devel libevdev-devel libinput-devel xorg-x11-util-macros diffutils'
     FDO_DISTRIBUTION_EXEC: 'env FDO_CI_CONCURRENT=${FDO_CI_CONCURRENT} bash .gitlab-ci/fedora-install.sh'
-    FDO_DISTRIBUTION_TAG: '2025-04-01.0'
+    FDO_DISTRIBUTION_TAG: '2025-10-24.0'
 
 
 fedora@container_build:
