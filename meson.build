@@ -32,17 +32,13 @@ add_project_arguments(cc.get_supported_arguments(cflags), language: 'c')
 pkgconfig = import('pkgconfig')
 dep_xserver = dependency('xorg-server', version: '>= 1.19')
 dep_xproto = dependency('xproto')
-dep_inputproto = dependency('inputproto', version: '>= 2.2')
+dep_inputproto = dependency('inputproto', version: '>= 2.3.99.1')
 dep_libinput = dependency('libinput', version: '>= 1.11.0')
 
 config_h = configuration_data()
 config_h.set('PACKAGE_VERSION_MAJOR', driver_version[0])
 config_h.set('PACKAGE_VERSION_MINOR', driver_version[1])
 config_h.set('PACKAGE_VERSION_PATCHLEVEL', driver_version[2])
-
-if dep_inputproto.version().version_compare('>= 2.3.99.1')
-	config_h.set('HAVE_INPUTPROTO24', 1)
-endif
 
 if cc.has_function('libinput_device_config_scroll_get_button_lock',
 		   dependencies: dep_libinput)

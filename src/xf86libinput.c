@@ -93,12 +93,6 @@ enum capabilities {
 	CAP_GESTURE = 0x40,
 };
 
-#if HAVE_INPUTPROTO24
-#if ABI_XINPUT_VERSION >= SET_ABI_VERSION(24, 4)
-#define HAVE_GESTURES
-#endif
-#endif
-
 struct xf86libinput_driver {
 	struct libinput *libinput;
 	int device_enabled_count;
@@ -1282,7 +1276,6 @@ xf86libinput_init_touch(InputInfoPtr pInfo)
 	InitTouchClassDeviceStruct(dev, ntouches, XIDirectTouch, 2);
 }
 
-#ifdef HAVE_GESTURES
 static void
 xf86libinput_init_gesture(InputInfoPtr pInfo)
 {
@@ -1290,7 +1283,6 @@ xf86libinput_init_gesture(InputInfoPtr pInfo)
 	int ntouches = TOUCH_MAX_SLOTS;
 	InitGestureClassDeviceStruct(dev, ntouches);
 }
-#endif
 
 static int
 xf86libinput_init_tablet_pen_or_eraser(InputInfoPtr pInfo,
@@ -1541,10 +1533,8 @@ xf86libinput_init(DeviceIntPtr dev)
 	}
 	if (driver_data->capabilities & CAP_TOUCH)
 		xf86libinput_init_touch(pInfo);
-#ifdef HAVE_GESTURES
 	if (driver_data->capabilities & CAP_GESTURE)
 		xf86libinput_init_gesture(pInfo);
-#endif
 	if (driver_data->capabilities & CAP_TABLET_TOOL)
 		xf86libinput_init_tablet(pInfo);
 	if (driver_data->capabilities & CAP_TABLET_PAD)
@@ -2019,7 +2009,6 @@ xf86libinput_handle_touch(InputInfoPtr pInfo,
 	xf86PostTouchEvent(dev, touchids[slot], type, 0, m);
 }
 
-#ifdef HAVE_GESTURES
 static void
 xf86libinput_handle_gesture_swipe(InputInfoPtr pInfo,
 				  struct libinput_event_gesture *event,
@@ -2097,7 +2086,6 @@ xf86libinput_handle_gesture_pinch(InputInfoPtr pInfo,
 				  libinput_event_gesture_get_scale(event),
 				  libinput_event_gesture_get_angle_delta(event));
 }
-#endif
 
 static InputInfoPtr
 xf86libinput_pick_device(struct xf86libinput_device *shared_device,
@@ -2696,20 +2684,16 @@ xf86libinput_handle_event(struct libinput_event *event)
 		case LIBINPUT_EVENT_GESTURE_SWIPE_BEGIN:
 		case LIBINPUT_EVENT_GESTURE_SWIPE_UPDATE:
 		case LIBINPUT_EVENT_GESTURE_SWIPE_END:
-#ifdef HAVE_GESTURES
 			xf86libinput_handle_gesture_swipe(pInfo,
 							  libinput_event_get_gesture_event(event),
 							  type);
-#endif
 			break;
 		case LIBINPUT_EVENT_GESTURE_PINCH_BEGIN:
 		case LIBINPUT_EVENT_GESTURE_PINCH_UPDATE:
 		case LIBINPUT_EVENT_GESTURE_PINCH_END:
-#ifdef HAVE_GESTURES
 			xf86libinput_handle_gesture_pinch(pInfo,
 							  libinput_event_get_gesture_event(event),
 							  type);
-#endif
 			break;
 		case LIBINPUT_EVENT_TABLET_TOOL_AXIS:
 			event_handling = xf86libinput_handle_tablet_axis(pInfo,
@@ -3963,10 +3947,8 @@ xf86libinput_create_subdevice(InputInfoPtr pInfo,
 		options = xf86ReplaceBoolOption(options, "_libinput/cap-pointer", 1);
 	if (capabilities & CAP_TOUCH)
 		options = xf86ReplaceBoolOption(options, "_libinput/cap-touch", 1);
-#ifdef HAVE_GESTURES
 	if (capabilities & CAP_GESTURE)
 		options = xf86ReplaceBoolOption(options, "_libinput/cap-gesture", 1);
-#endif
 	if (capabilities & CAP_TABLET_TOOL)
 		options = xf86ReplaceBoolOption(options, "_libinput/cap-tablet-tool", 1);
 	if (capabilities & CAP_TABLET_PAD)
@@ -4005,10 +3987,8 @@ caps_from_options(InputInfoPtr pInfo)
 		capabilities |= CAP_POINTER;
 	if (xf86CheckBoolOption(pInfo->options, "_libinput/cap-touch", 0))
 		capabilities |= CAP_TOUCH;
-#ifdef HAVE_GESTURES
 	if (xf86CheckBoolOption(pInfo->options, "_libinput/cap-gesture", 0))
 		capabilities |= CAP_GESTURE;
-#endif
 	if (xf86CheckBoolOption(pInfo->options, "_libinput/cap-tablet-tool", 0))
 		capabilities |= CAP_TABLET_TOOL;
 
@@ -4154,10 +4134,8 @@ xf86libinput_pre_init(InputDriverPtr drv,
 			driver_data->capabilities |= CAP_KEYBOARD;
 		if (libinput_device_has_capability(device, LIBINPUT_DEVICE_CAP_TOUCH))
 			driver_data->capabilities |= CAP_TOUCH;
-#ifdef HAVE_GESTURES
 		if (libinput_device_has_capability(device, LIBINPUT_DEVICE_CAP_GESTURE))
 			driver_data->capabilities |= CAP_GESTURE;
-#endif
 		if (libinput_device_has_capability(device, LIBINPUT_DEVICE_CAP_TABLET_TOOL))
 			driver_data->capabilities |= CAP_TABLET;
 		if (libinput_device_has_capability(device, LIBINPUT_DEVICE_CAP_TABLET_PAD))
