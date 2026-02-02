@@ -5,6 +5,7 @@ project('xf86-input-libinput', 'c',
 
 driver_version = meson.project_version().split('.')
 
+dir_pkgconf	= get_option('prefix') / get_option('libdir') / 'pkgconfig'
 dir_man4	= get_option('prefix') / get_option('mandir') / 'man4'
 
 cc = meson.get_compiler('c')
@@ -122,6 +123,18 @@ test_draglock = executable('test-draglock',
 			 include_directories: include_directories('src'),
 			 install: false)
 test('test-draglock', test_draglock)
+
+
+conf_pkgconf = configuration_data()
+conf_pkgconf.set('PACKAGE_VERSION', meson.project_version())
+conf_pkgconf.set('sdkdir', dir_headers)
+
+configure_file(
+	input: 'xorg-libinput.pc.in',
+	output: 'xorg-libinput.pc',
+	configuration: conf_pkgconf,
+	install_dir: dir_pkgconf,
+)
 
 config_man = configuration_data()
 config_man.set('VERSION', '@0@ @1@'.format(meson.project_name(), meson.project_version()))

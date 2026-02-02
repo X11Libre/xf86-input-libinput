@@ -27,6 +27,9 @@ DISTCHECK_CONFIGURE_FLAGS = --with-xorg-module-dir='$${libdir}/xorg/modules' \
 SUBDIRS = src include man test
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = xorg-libinput.pc
+
 dist_xorgconf_DATA = conf/40-libinput.conf
 
 .PHONY: ChangeLog INSTALL
