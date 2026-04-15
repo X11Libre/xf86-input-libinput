@@ -3,7 +3,7 @@ xf86-input-libinput - a libinput-based X driver
 
 The official repository for this driver is
 
-  https://github.com/X11Libre/xf86-input-evdev
+  https://github.com/X11Libre/xf86-input-libinput
 
 This is an X driver based on libinput. It is a thin wrapper around libinput,
 so while it does provide all features that libinput supports it does little
