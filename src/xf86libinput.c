@@ -3985,8 +3985,10 @@ xf86libinput_create_subdevice(InputInfoPtr pInfo,
 	xf86OptionListFree(options);
 
 	hotplug = calloc(1, sizeof(*hotplug));
-	if (!hotplug)
+	if (!hotplug) {
+		input_option_free_list(&iopts);
 		return;
+	}
 
 	hotplug->input_options = iopts;
 	hotplug->attrs = DuplicateInputAttributes(pInfo->attrs);
