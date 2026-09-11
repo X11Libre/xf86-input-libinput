@@ -4328,7 +4328,7 @@ update_mode_prop_cb(ClientPtr client, pointer closure)
 {
 	struct mode_prop_state *state = closure;
 	InputInfoPtr pInfo = state->pInfo, tmp;
-	struct xf86libinput *driver_data = pInfo->private;
+	struct xf86libinput *driver_data;
 	BOOL found = FALSE;
 	XIPropertyValuePtr val;
 	int rc;
@@ -4351,6 +4351,12 @@ update_mode_prop_cb(ClientPtr client, pointer closure)
 	}
 	if (!found)
 		goto out;
+
+	/* Only safe to touch pInfo/its fields once the loop above has
+	 * confirmed it's still a live, registered device -- pInfo may
+	 * point at freed memory otherwise (device unplugged while this
+	 * WorkProc was queued). */
+	driver_data = pInfo->private;
 
 	rc = XIGetDeviceProperty(pInfo->dev,
 				 prop_mode_groups,
