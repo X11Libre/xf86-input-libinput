@@ -1578,7 +1578,27 @@ swap_registered_device(InputInfoPtr pInfo)
 		return;
 
 	next = xf86FirstLocalDevice();
-	while (next && (next == pInfo || !is_libinput_device(next)))
+    /*
+     * Only a currently enabled libinput device may take over the shared
+     * libinput fd registered with the input thread.
+     *
+     * A disabled device has pInfo->fd == -1 (xf86libinput_off() resets it).
+     * Passing it to xf86AddEnabledDevice() creates a bogus input-thread
+     * entry with fd -1 instead of replacing the readInputArgs of the entry
+     * for the shared libinput fd. That entry keeps pointing at the pInfo
+     * being destroyed, and the next event on the shared fd calls
+     * pInfo->read_input on freed memory.
+     *
+     * - next->dev->public.on: the same check that
+     *   xf86libinput_handle_event() already uses (!pInfo->dev->public.on)
+     *   to ignore events for devices that are not enabled.
+     * - next->fd < 0: an additional safeguard in case a device reports
+     *   public.on but does not yet have a real fd.
+     */
+    while (next && (next == pInfo ||
+                    !is_libinput_device(next) ||
+                    !next->dev || !next->dev->public.on ||
+                    next->fd < 0))
 		next = next->next;
 
 	input_lock();
