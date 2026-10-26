@@ -2882,7 +2882,7 @@ xf86libinput_parse_tap_option(InputInfoPtr pInfo,
 
 	tap = xf86SetBoolOption(pInfo->options,
 				"Tapping",
-				libinput_device_config_tap_get_enabled(device));
+				TRUE);
 
 	if (libinput_device_config_tap_set_enabled(device, tap) !=
 	    LIBINPUT_CONFIG_STATUS_SUCCESS) {
@@ -5644,8 +5644,7 @@ LibinputInitTapProperty(DeviceIntPtr dev,
 			struct xf86libinput *driver_data,
 			struct libinput_device *device)
 {
-	// By default tapping property config is true
-	BOOL tap = driver_data->options.tapping ? driver_data->options.tapping : TRUE;
+	BOOL tap = driver_data->options.tapping;
 
 	if (!subdevice_has_capabilities(dev, CAP_POINTER))
 		return;
