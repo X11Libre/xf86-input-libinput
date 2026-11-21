@@ -139,8 +139,8 @@ inputdir=${moduledir}/input
 AC_SUBST(inputdir)
 
 AC_ARG_WITH(xorg-conf-dir,
-            AC_HELP_STRING([--with-xorg-conf-dir=DIR],
-                           [Default xorg.conf.d directory [[default=${prefix}/share/X11/xorg.conf.d]]]),
+            AS_HELP_STRING([--with-xorg-conf-dir=DIR],
+                           [Default xorg.conf.d directory @<:@default=${prefix}/share/X11/xorg.conf.d@:>@]),
             [xorgconfdir="$withval"],
             [xorgconfdir='${prefix}/share/X11/xorg.conf.d'])
 AC_SUBST(xorgconfdir)
