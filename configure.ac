@@ -125,6 +125,17 @@ AC_LINK_IFELSE(
                [AC_MSG_RESULT([no])
                 [libinput_have_plugin_system=no]])
 
+AC_MSG_CHECKING([if LIBINPUT_LED_COMPOSE and LIBINPUT_LED_KANA are available])
+AC_COMPILE_IFELSE(
+               [AC_LANG_PROGRAM([[#include <libinput.h>]],
+                                [[enum libinput_led l = LIBINPUT_LED_COMPOSE | LIBINPUT_LED_KANA; (void)l;]])],
+               [AC_MSG_RESULT([yes])
+                AC_DEFINE(HAVE_LIBINPUT_COMPOSE_AND_KANA, [1],
+                          [LIBINPUT_LED_COMPOSE and LIBINPUT_LED_KANA are available])
+                [libinput_have_compose_and_kana=yes]],
+               [AC_MSG_RESULT([no])
+                [libinput_have_compose_and_kana=no]])
+
 LIBS=$OLD_LIBS
 CFLAGS=$OLD_CFLAGS
 
