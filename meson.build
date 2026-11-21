@@ -3,7 +3,17 @@ project('xf86-input-libinput', 'c',
         default_options: ['warning_level=2'],
         meson_version: '>= 0.50.0')
 
-driver_version = meson.project_version().split('.')
+# Keep a pre-release suffix such as "-rc1" out of the version numbers.
+version_parts = meson.project_version().split('-')
+driver_version = version_parts[0].split('.')
+version_suffix = ''
+i = 0
+foreach part : version_parts
+	if i > 0
+		version_suffix += '-' + part
+	endif
+	i += 1
+endforeach
 
 dir_pkgconf	= get_option('prefix') / get_option('libdir') / 'pkgconfig'
 dir_man4	= get_option('prefix') / get_option('mandir') / 'man4'
@@ -40,6 +50,7 @@ config_h = configuration_data()
 config_h.set('PACKAGE_VERSION_MAJOR', driver_version[0])
 config_h.set('PACKAGE_VERSION_MINOR', driver_version[1])
 config_h.set('PACKAGE_VERSION_PATCHLEVEL', driver_version[2])
+config_h.set_quoted('PACKAGE_VERSION_SUFFIX', version_suffix)
 
 if cc.has_function('libinput_device_config_scroll_get_button_lock',
 		   dependencies: dep_libinput)
