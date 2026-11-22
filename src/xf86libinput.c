@@ -387,29 +387,26 @@ xf86libinput_shared_enable(InputInfoPtr pInfo,
 	 * When the device is unplugged, the server now correctly finds two
 	 * devices on the real fd and releases them in order.
 	 */
-	shared_device->enabled_count++;
-	if (shared_device->enabled_count > 1) {
-		if (pInfo->flags & XI86_SERVER_FD) {
-			pInfo->options = xf86ReplaceIntOption(pInfo->options,
-							      "fd",
-							      shared_device->server_fd);
-		}
+	if (shared_device->enabled_count == 0) {
+		device = libinput_path_add_device(libinput, path);
+		if (!device)
+			return NULL;
 
-		return shared_device->device;
+		libinput_device_set_user_data(device, shared_device);
+		shared_device->device = libinput_device_ref(device);
+
+		if (pInfo->flags & XI86_SERVER_FD)
+			shared_device->server_fd = xf86CheckIntOption(pInfo->options,
+								      "fd",
+								      -1);
+	} else if (pInfo->flags & XI86_SERVER_FD) {
+		pInfo->options = xf86ReplaceIntOption(pInfo->options,
+						      "fd",
+						      shared_device->server_fd);
 	}
 
-	device = libinput_path_add_device(libinput, path);
-	if (!device)
-		return NULL;
-
-	libinput_device_set_user_data(device, shared_device);
-	shared_device->device = libinput_device_ref(device);
-
-	if (pInfo->flags & XI86_SERVER_FD)
-		shared_device->server_fd = xf86CheckIntOption(pInfo->options,
-							      "fd",
-							      -1);
-	return device;
+	shared_device->enabled_count++;
+	return shared_device->device;
 }
 
 static inline void
