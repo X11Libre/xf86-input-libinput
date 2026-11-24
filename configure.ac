@@ -23,7 +23,7 @@
 # Initialize Autoconf
 AC_PREREQ([2.60])
 AC_INIT([xlibre-xf86-input-libinput],
-        [25.0.2-rc1],
+        [25.0.2-rc2],
         [https://github.com/X11Libre/xf86-input-libinput/issues],
         [xlibre-xf86-input-libinput])
 AC_CONFIG_SRCDIR([Makefile.am])
